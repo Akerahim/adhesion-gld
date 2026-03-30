@@ -220,29 +220,80 @@ input:focus,select:focus,textarea:focus{border-color:var(--acc);box-shadow:0 0 0
 .modal-close:hover{border-color:var(--dark);color:var(--dark)}
 
 /* RESPONSIVE */
+
+/* Tablette paysage */
 @media(max-width:960px){
   .page{grid-template-columns:280px 1fr}
   .left{padding:32px 20px 32px 28px}
   .right{padding:32px 28px 40px 20px}
   .heading{font-size:2rem}
 }
+
+/* Tablette portrait / mobile large */
 @media(max-width:760px){
-  nav{padding:0 16px}
+  html{font-size:16px}
+  nav{padding:0 16px;height:56px}
   .burger{display:flex}
+  .mob-menu{top:56px}
   .page{grid-template-columns:1fr;min-height:auto}
-  .left{position:relative;top:auto;height:auto;padding:28px 16px 20px;border-bottom:1px solid var(--border)}
-  .right{padding:24px 16px 36px;border-left:none}
+  .left{position:relative;top:auto;height:auto;padding:28px 20px 24px;border-bottom:1px solid var(--border);text-align:center}
+  .left-logo img{width:160px;height:160px}
+  .info-list{align-items:center}
+  .info-item{justify-content:center}
+  .divider{margin:18px auto}
+  .desc{text-align:center}
+  .wa-btn{justify-content:center}
+  .qr-box{max-width:280px;margin:0 auto}
+  .right{padding:24px 20px 36px;border-left:none}
   .heading{font-size:1.9rem}
   .form-grid{grid-template-columns:1fr}
   .fg.full{grid-column:1}
   .mdd-wrap{grid-column:1}
   .mdd-tabs{flex-wrap:wrap}
   .mdd-tab{min-width:50%;border-bottom:1px solid var(--border)}
+  .sel-badge{flex-wrap:wrap}
+  .vid-btns{flex-wrap:wrap}
+  .vbtn{min-width:calc(50% - 4px)}
+  .overlay{padding:12px}
+  .modal{padding:28px 20px;max-width:100%}
 }
-@media(max-width:420px){
-  .btn-sub{width:100%;justify-content:center}
-  .modal{padding:26px 16px}
-  .left-logo img{width:150px;height:150px}
+
+/* Mobile standard */
+@media(max-width:480px){
+  html{font-size:15px}
+  nav{padding:0 12px;height:52px}
+  .mob-menu{top:52px}
+  .nav-g{width:32px;height:32px}
+  .nav-g span{font-size:.8rem}
+  .nav-txt{font-size:.82rem}
+  .left{padding:24px 16px 20px}
+  .left-logo img{width:140px;height:140px}
+  .heading{font-size:1.7rem}
+  .desc{font-size:.78rem}
+  .right{padding:20px 16px 32px}
+  .form-grid{gap:14px}
+  input[type=text],input[type=email],input[type=tel],select,textarea{padding:10px 12px;font-size:.78rem}
+  .mdd-trigger{padding:10px 12px;font-size:.74rem}
+  .mdd-tab{min-width:100%;border-right:none}
+  .btn-sub{width:100%;justify-content:center;padding:13px 20px}
+  .modal{padding:24px 16px}
+  .modal h2{font-size:1.3rem}
+  .modal-sub{font-size:.75rem}
+  .cam-wrap,.vid-wrap{aspect-ratio:3/2}
+}
+
+/* Petit mobile */
+@media(max-width:360px){
+  html{font-size:14px}
+  .left{padding:20px 12px 16px}
+  .left-logo img{width:120px;height:120px}
+  .heading{font-size:1.5rem}
+  .right{padding:18px 12px 28px}
+  .form-grid{gap:12px}
+  .wa-btn{flex-direction:column;text-align:center;padding:12px}
+  .info-item{flex-direction:column;align-items:center;text-align:center;gap:8px}
+  .modal h2{font-size:1.2rem}
+  .modal-wa{flex-direction:column;padding:12px 16px}
 }
 </style>
 </head>
