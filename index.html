@@ -755,16 +755,42 @@ form.addEventListener('submit', async function(e) {
   var reseauxVal = document.getElementById('reseaux').value.trim() || "—";
   var dateVal = new Date().toLocaleString('fr-FR');
 
-  // ── Airtable (via proxy PHP sécurisé) ──
+  // ── Préparer le fichier (photo/vidéo) en base64 ──
+  var fileBase64 = null, fileName = null, fileType = null;
+  if (selFile) {
+    try {
+      var reader = new FileReader();
+      var fileData = await new Promise(function(resolve) {
+        reader.onload = function() { resolve(reader.result); };
+        reader.readAsDataURL(selFile);
+      });
+      fileBase64 = fileData.split(',')[1];
+      fileName = selFile.name;
+      fileType = selFile.type;
+    } catch(e) { console.error("File read:", e); }
+  }
+
+  // ── Airtable (via Netlify Function sécurisée) ──
   try {
-    await fetch("/.netlify/functions/airtable-proxy", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ records: [{ fields: {
+    var payload = {
+      fields: {
         Nom: nomVal, Email: emailVal, Telephone: telVal,
         Pays: paysVal, Ville: villeVal, Activite: activiteVal,
         Reseaux: reseauxVal, Date: dateVal
-      }}]})
+      }
+    };
+    if (fileBase64) {
+      payload.fileBase64 = fileBase64;
+      payload.fileName = fileName;
+      payload.fileType = fileType;
+    }
+    if (selUrl) {
+      payload.fields.Photo_URL = [{ url: selUrl }];
+    }
+    await fetch("/.netlify/functions/upload-media", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
   } catch(e) { console.error("Airtable:", e); }
 
