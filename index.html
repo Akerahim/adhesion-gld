@@ -757,7 +757,7 @@ form.addEventListener('submit', async function(e) {
 
   // ── Airtable (via proxy PHP sécurisé) ──
   try {
-    await fetch("/api/airtable-proxy", {
+    await fetch("/.netlify/functions/airtable-proxy", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ records: [{ fields: {
