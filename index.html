@@ -746,10 +746,7 @@ form.addEventListener('submit', async function(e) {
   var emailVal = document.getElementById('email').value.trim();
   setLoad(true);
 
-  // ── Airtable ──
-  var AT_TOKEN = "patHlU3Eo0wAWFnTy.342367a8b0c16b369383297aa6035fbe4454dd0fedb027be20565a4e85a655d5";
-  var AT_BASE  = "appmgf5OnBCK2rjHB";
-  var AT_TABLE = "Membres";
+  // ── Airtable (via proxy PHP sécurisé) ──
   try {
     var fields = {
       Nom:       document.getElementById('nom').value.trim(),
@@ -761,12 +758,9 @@ form.addEventListener('submit', async function(e) {
       Reseaux:   document.getElementById('reseaux').value.trim() || "—",
       Date:      new Date().toLocaleString('fr-FR'),
     };
-    await fetch("https://api.airtable.com/v0/" + AT_BASE + "/" + encodeURIComponent(AT_TABLE), {
+    await fetch("/api/airtable-proxy.php", {
       method: "POST",
-      headers: {
-        "Authorization": "Bearer " + AT_TOKEN,
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ records: [{ fields: fields }] })
     });
   } catch(e) { console.error("Airtable:", e); }
