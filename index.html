@@ -746,24 +746,44 @@ form.addEventListener('submit', async function(e) {
   var emailVal = document.getElementById('email').value.trim();
   setLoad(true);
 
+  // ── Données du formulaire ──
+  var nomVal = document.getElementById('nom').value.trim();
+  var telVal = document.getElementById('tel').value.trim() || "—";
+  var paysVal = document.getElementById('pays').value.trim();
+  var villeVal = document.getElementById('ville').value.trim();
+  var activiteVal = document.getElementById('activite').value;
+  var reseauxVal = document.getElementById('reseaux').value.trim() || "—";
+  var dateVal = new Date().toLocaleString('fr-FR');
+
   // ── Airtable (via proxy PHP sécurisé) ──
   try {
-    var fields = {
-      Nom:       document.getElementById('nom').value.trim(),
-      Email:     emailVal,
-      Telephone: document.getElementById('tel').value.trim() || "—",
-      Pays:      document.getElementById('pays').value.trim(),
-      Ville:     document.getElementById('ville').value.trim(),
-      Activite:  document.getElementById('activite').value,
-      Reseaux:   document.getElementById('reseaux').value.trim() || "—",
-      Date:      new Date().toLocaleString('fr-FR'),
-    };
     await fetch("/api/airtable-proxy.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ records: [{ fields: fields }] })
+      body: JSON.stringify({ records: [{ fields: {
+        Nom: nomVal, Email: emailVal, Telephone: telVal,
+        Pays: paysVal, Ville: villeVal, Activite: activiteVal,
+        Reseaux: reseauxVal, Date: dateVal
+      }}]})
     });
   } catch(e) { console.error("Airtable:", e); }
+
+  // ── EmailJS — notification admin + confirmation adhérent ──
+  try {
+    emailjs.init("vHIKpsUiGq_r-ru1b");
+    await emailjs.send("service_wtfc3oh", "template_zzqsb4q", {
+      to_email:  emailVal,
+      from_name: "Le Grand Loh Djiboua",
+      nom:       nomVal,
+      email:     emailVal,
+      telephone: telVal,
+      pays:      paysVal,
+      ville:     villeVal,
+      activite:  activiteVal,
+      reseaux:   reseauxVal,
+      date:      dateVal
+    });
+  } catch(e) { console.error("EmailJS:", e); }
 
   setLoad(false);
   document.getElementById('modalEmail').textContent = emailVal;
